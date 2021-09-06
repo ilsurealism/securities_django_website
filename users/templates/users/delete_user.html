@@ -1,0 +1,22 @@
+{% extends 'layout/basic.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}
+    {{ user.username }}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mb-4">{{ user.username }}, вы уверены, что хотите удалить свою учётную запись?</h1>
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_button button_type="submit" button_class="btn-danger" content="Удалить" %}
+    </form>
+
+    <br>
+    <a class="btn btn-outline-primary" href="{% url 'articles:list_view' %}">Назад</a>
+
+{% endblock %}
+

@@ -1,0 +1,54 @@
+{% extends 'layout/basic.html' %}
+
+{% load static %}
+
+{% block title %}
+    {{ current_type }}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mb-4">
+        {% if current_type.icon %}
+            <img class="pb-3" src="{{ current_type.icon.url }}" width="48" alt="{{ current_type }}">
+        {% endif %}
+        {{ current_type }}
+    </h1>
+
+
+    <table class="table table-hover align-middle  border">
+<!--      <thead>-->
+<!--        <tr>-->
+<!--          <th scope="col"></th>-->
+<!--          <th scope="col">Name</th>-->
+<!--          <th scope="col">Ticker</th>-->
+<!--        </tr>-->
+<!--      </thead>-->
+      <tbody>
+        {% for security in securities_list %}
+            <tr>
+              <th scope="row">
+                  {% if security.icon %}
+                    <img class="mx-auto d-block" src="{{ security.icon.url }}" width="24" alt="{{ security.icon }}">
+                  {% else %}
+                    <img width="24" src="{% static 'stocksetfsbonds/img/museum.png' %}" alt="{{ security.name }}" class="mx-auto d-block">
+                  {% endif %}
+              </th>
+              <td>
+                  <a href="{% url 'securities:security_detail' security.slug %}">
+                    {{ security.ticker }}
+                  </a>
+              </td>
+              <td>
+                  <a href="{% url 'securities:security_detail' security.slug %}">
+                    {{ security.name }}
+                  </a>
+              </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+
+{% endblock %}

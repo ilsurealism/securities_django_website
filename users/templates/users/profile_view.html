@@ -1,0 +1,84 @@
+{% extends 'layout/basic.html' %}
+
+{% load django_bootstrap5 %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}
+    Профиль {{ user_profile.username }}
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="row align-items-center border rounded mb-5">
+        <div class="col-2">
+            {% if user_profile.photo %}
+                <img class="rounded-circle my-3 mx-2" src="{{ user_profile.photo.url }}" width="64" height="64" alt="{{ user_profile.username }}">
+            {% else %}
+                <i class="bi bi-person-circle m-2" style="font-size: 64px;"></i>
+            {% endif %}
+        </div>
+        <div class="col-10 p-3">
+            <h1 class="mb-0">
+                {% if user_profile.first_name %}
+                    {{ user_profile.first_name }} {{ user_profile.last_name }}
+                {% endif %}
+            </h1>
+            <span class="text-secondary"><em><b>@{{ user_profile.username }}</b></em></span>
+        </div>
+    </div>
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
+
+</div>
+
+    <h1 class="mb-4">Публикации пользователя <span class="text-secondary"><em><b>@{{ user_profile.username }}</b></em></span></h1>
+
+    {% for article in user_profile_articles %}
+        <div class="card mb-3 bg-light">
+            <div class="card-body">
+                <small>
+                    {% for tag in article.tags.all %}
+                        <i class="bi bi-hash"></i><a class="text-decoration-none" href="{% url 'articles:articles_by_tags' tag %}">{{ tag }}</a>
+                    {% endfor %}
+                </small>
+                <h1>
+                    <a class="text-decoration-none" href="{% url 'articles:detail_view' article.slug %}">{{ article }}</a>
+                </h1>
+                <small class="me-1">
+                    Опубликовано: {{ article.post_date|naturalday }}
+                </small>
+                <small>
+                    <a href="{% url 'articles:update_view' article.slug %}">Обновить</a>
+                    <a href="{% url 'articles:delete_view' article.slug %}">Удалить</a>
+                </small>
+                <p class="mt-4">
+                    {{ article.description }}
+                </p>
+                {% for security in article.stocks_etfs_or_bonds.all %}
+                    <span class="badge border bg-light text-dark">
+                        {% if security.icon %}
+                            <img src="{{ security.icon.url }}" width="16" alt="{{ security.icon }}" class="align-bottom">
+                        {% else %}
+                            <img width="16" src="{% static 'stocksetfsbonds/img/museum.png' %}" alt="{{ security.name }}" class="align-bottom">
+                        {% endif %}
+                        <a class="text-decoration-none" href="{% url 'securities:security_detail' security.slug %}">
+                            {{ security.ticker }}
+                        </a>
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
+    {% empty %}
+        У пользователя ещё нет публикаций.
+    {% endfor %}
+
+{% endblock %}
+

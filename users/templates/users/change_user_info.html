@@ -1,0 +1,29 @@
+{% extends 'layout/basic.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}
+    {{ user.username }}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mb-4">Правка личных данных пользователя {{ user.username }}</h1>
+
+
+
+    <form method="post" class="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+        {% bootstrap_button button_type="submit" content="Сохранить" %}
+    </form>
+
+    <a class="btn btn-primary my-4" href="{% url 'users:password_change' %}" role="button">Изменить пароль</a>
+    <a class="btn btn-danger my-4" href="{% url 'users:profile_delete' %}" role="button">Удалить аккаунт</a>
+
+    <br>
+    <a class="btn btn-outline-primary" href="{% url 'articles:list_view' %}">Назад</a>
+
+{% endblock %}
+

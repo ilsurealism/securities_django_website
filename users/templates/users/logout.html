@@ -1,0 +1,21 @@
+{% extends 'layout/basic.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}
+    Выход
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mb-4">Выход</h1>
+
+    <p>
+        Вы успешно вышли из сайта.
+    </p>
+
+    <br>
+    <a class="btn btn-outline-primary" href="{% url 'articles:list_view' %}">Назад</a>
+
+{% endblock %}
+

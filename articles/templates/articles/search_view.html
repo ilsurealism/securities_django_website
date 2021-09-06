@@ -1,0 +1,129 @@
+{% extends 'layout/basic.html' %}
+
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+    <h1 class="mb-4"><i class="bi bi-search me-2"></i>Результаты по запросу "{{ query }}"</h1>
+
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><i class="bi bi-book me-1"></i>Публикации</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="bi bi-cash-coin me-1"></i>Ценные бумаги</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="bi bi-person-circle me-1"></i>Пользователи</button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+          {% for article in object_list %}
+            <div class="card mb-3 bg-light">
+                            <div class="card-body">
+                                <small>
+                                    {% for tag in article.tags.all %}
+                                        <i class="bi bi-hash"></i><a class="text-decoration-none" href="{% url 'articles:articles_by_tags' tag %}">{{ tag }}</a>
+                                    {% endfor %}
+                                </small>
+                                <h1>
+                                    <a class="text-decoration-none" href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+                                </h1>
+                                <small class="me-1">
+                                    Опубликовано: <a style="text-decoration: none;" class="link-secondary me-1" href="{% url 'users:profile_view' article.author.username %}"><em><b>@{{ article.author.username }}</b></em></a> {{ article.post_date|naturalday }}
+                                </small>
+                                <small>
+                                    <a href="{% url 'articles:update_view' article.slug %}">Обновить</a>
+                                    <a href="{% url 'articles:delete_view' article.slug %}">Удалить</a>
+                                </small>
+                                <p class="mt-4">
+                                    {{ article.description }}
+                                </p>
+                                {% for security in article.stocks_etfs_or_bonds.all %}
+                                    <span class="badge border bg-light text-dark">
+                                        {% if security.icon %}
+                                            <img src="{{ security.icon.url }}" width="16" alt="{{ security.icon }}" class="align-bottom">
+                                        {% else %}
+                                            <img width="16" src="{% static 'stocksetfsbonds/img/museum.png' %}" alt="{{ security.name }}" class="align-bottom">
+                                        {% endif %}
+                                        <a class="text-decoration-none" href="{% url 'securities:security_detail' security.slug %}">
+                                            {{ security.ticker }}
+                                        </a>
+                                    </span>
+                                {% endfor %}
+                            </div>
+            </div>
+          {% endfor %}
+      </div>
+
+      <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <table class="table table-hover align-middle  border">
+    <!--              <thead>-->
+    <!--                <tr>-->
+    <!--                  <th scope="col"></th>-->
+    <!--                  <th scope="col">Name</th>-->
+    <!--                  <th scope="col">Ticker</th>-->
+    <!--                </tr>-->
+    <!--              </thead>-->
+                  <tbody>
+                  {% for security in securities_list %}
+                        <tr>
+                          <th scope="row">
+                              {% if security.icon %}
+                                <img class="mx-auto d-block" src="{{ security.icon.url }}" width="24" alt="{{ security.icon }}">
+                              {% else %}
+                                <img width="24" src="{% static 'stocksetfsbonds/img/museum.png' %}" alt="{{ security.name }}" class="mx-auto d-block">
+                              {% endif %}
+                          </th>
+                          <td>
+                              <a href="{% url 'securities:securities_list' security.stocketforbond.slug %}">
+                                {{ security.stocketforbond }}
+                              </a>
+                          </td>
+                          <td>
+                              <a href="{% url 'securities:security_detail' security.slug %}">
+                                {{ security.ticker }}
+                              </a>
+                          </td>
+                          <td>
+                              <a href="{% url 'securities:security_detail' security.slug %}">
+                                {{ security.name }}
+                              </a>
+                          </td>
+                        </tr>
+                  {% endfor %}
+                  </tbody>
+            </table>
+      </div>
+
+      <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+          <div class="list-group">
+              {% for user in users_list %}
+                  <a href="{% url 'users:profile_view' user.username %}" class="list-group-item list-group-item-action">
+                      <span class="d-flex flex-row align-items-center">
+                        <p class="me-3">
+                            {% if user.photo %}
+                                <img src="{{ user.photo.url }}" class="rounded-circle" width="32" height="32" alt="">
+                            {% else %}
+                                <i class="bi bi-person-circle" style="font-size: 32px;"></i>
+                            {% endif %}
+                        </p>
+                        <p class="lh-sm">
+                            {% if user.first_name  %}
+                                <span class="fs-5">
+                                    {{ user.first_name }}
+                                    {{ user.last_name }}
+                                </span>
+                                <br>
+                            {% endif %}
+                                <em class="text-secondary"><b>@{{ user.username }}</b></em>
+                        </p>
+                      </span>
+                  </a>
+              {% endfor %}
+          </div>
+      </div>
+    </div>
+{% endblock %}

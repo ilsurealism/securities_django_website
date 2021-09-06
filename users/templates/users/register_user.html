@@ -1,0 +1,24 @@
+{% extends 'layout/basic.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}
+    Регистрация
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mb-4">Регистрация нового пользователя</h1>
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+        {% bootstrap_button button_type="submit" content="Зарегистрироваться" %}
+    </form>
+
+    <br>
+    <a class="btn btn-outline-primary" href="{% url 'articles:list_view' %}">Назад</a>
+
+{% endblock %}
+

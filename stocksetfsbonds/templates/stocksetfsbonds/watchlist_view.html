@@ -1,0 +1,58 @@
+{% extends 'layout/basic.html' %}
+
+{% load static %}
+
+{% block title %}
+    Список наблюдения
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mb-4">
+
+        <i class="bi bi-bookmark-star me-3"></i>Список наблюдения
+    </h1>
+
+
+    <table class="table table-hover align-middle  border">
+<!--      <thead>-->
+<!--        <tr>-->
+<!--          <th scope="col"></th>-->
+<!--          <th scope="col">Name</th>-->
+<!--          <th scope="col">Ticker</th>-->
+<!--        </tr>-->
+<!--      </thead>-->
+      <tbody>
+        {% for security in in_watchlist %}
+            <tr>
+              <th scope="row">
+                  {% if security.icon %}
+                    <img class="mx-auto d-block" src="{{ security.icon.url }}" width="24" alt="{{ security.icon }}">
+                  {% else %}
+                    <img width="24" src="{% static 'stocksetfsbonds/img/museum.png' %}" alt="{{ security.name }}" class="mx-auto d-block">
+                  {% endif %}
+              </th>
+              <td>
+                  <a href="{% url 'securities:securities_list' security.stocketforbond.slug %}">
+                    {{ security.stocketforbond }}
+                  </a>
+              </td>
+              <td>
+                  <a href="{% url 'securities:security_detail' security.slug %}">
+                    {{ security.ticker }}
+                  </a>
+              </td>
+              <td>
+                  <a href="{% url 'securities:security_detail' security.slug %}">
+                    {{ security.name }}
+                  </a>
+              </td>
+
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+
+{% endblock %}

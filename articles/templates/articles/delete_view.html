@@ -1,0 +1,24 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}
+    Удалить публикацию?
+{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">
+        Удалить публикации {{ article_delete }}?
+    </h1>
+
+    <br>
+
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            Вы уверены что хотите удалить публикацию <b>{{ article_delete }}</b>?
+        </p>
+        <input class="btn btn-danger" type="submit" value="Удалить">
+    </form>
+
+    <br>
+    <a class="btn btn-outline-primary" href="{{ object.get_absolute_url }}">Назад</a>
+{% endblock %}

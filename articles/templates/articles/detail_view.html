@@ -1,0 +1,160 @@
+{% extends 'layout/basic.html' %}
+
+{% load humanize %}
+{% load static %}
+{% load comments %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+    {{ object }}
+{% endblock %}
+
+{% block content %}
+<div class="alert alert-warning d-flex align-items-center" role="alert">
+    <i class="bi bi-exclamation-circle me-2" style="font-size: 24px;"></i>
+  <div>
+    Ни одна публикация, ни любой другой материал, опубликаванные на этом сайте, не являются инвестиционными рекомендациями!
+  </div>
+</div>
+<div class="mb-4">
+    <h1 class="mb-4">
+        <div class="d-flex justify-content-start">
+            {{ article.title }}
+            <form class="ms-5" action="{% url 'articles:bookmark_article' article.slug %}" method="post">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                    {% if bookmarked %}
+                        <button class="btn btn-outline-light border" type="submit" name="article_id" value="{{ article.id }}">
+                            <i class="bi bi-bookmark-check-fill text-success fs-5"></i>
+                        </button>
+                    {% else %}
+                        <button class="btn btn-outline-light border" type="submit" name="article_id" value="{{ article.id }}">
+                            <i class="bi bi-bookmark text-success fs-5"></i>
+                        </button>
+                    {% endif %}
+                {% endif %}
+            </form>
+        </div>
+
+
+
+    </h1>
+    <a class="link-secondary" href="{% url 'users:profile_view' article.author.username %}" style="text-decoration: none;">
+        {% if article.author.photo %}
+            <img width="24" height="24" class="rounded-circle mb-2" src="{{ article.author.photo.url }}" alt="">
+        {% else %}
+            <i class="bi bi-person-circle" style="font-size: 24px;"></i>
+        {% endif %}
+        <em class="text-secondary"><b>@{{ article.author.username }}</b></em>
+    </a>
+    <br>
+    <small class="me-1">
+        Опубликовано: {{ article.post_date|naturalday }}
+    </small>
+    {% if user == article.author %}
+    <small>
+        <a href="{% url 'articles:update_view' article.slug %}">Обновить</a>
+    </small>
+    <small>
+        <a href="{% url 'articles:delete_view' article.slug %}">Удалить</a>
+    </small>
+    {% endif %}
+</div>
+
+<div class="mb-5">
+    <div>
+        {% if article.title_image %}
+            <img src="{{ article.title_image.url }}" width="50%" alt="{{ article.title }}" class="border rounded">
+        {% endif %}
+    </div>
+
+    <p>
+        {{ article.body|safe }}
+    </p>
+
+</div>
+
+    <p>
+        {% for tag in article.tags.all %}
+            #<a href="{% url 'articles:articles_by_tags' tag %}">{{ tag }}</a>
+        {% endfor %}
+    </p>
+    <hr>
+    <p>
+        {% for security in article.stocks_etfs_or_bonds.all %}
+            <span class="badge border bg-light text-dark">
+                {% if security.icon %}
+                    <img src="{{ security.icon.url }}" width="16" alt="{{ security.icon }}" class="align-bottom">
+                {% else %}
+                    <img width="16" src="{% static 'stocksetfsbonds/img/museum.png' %}" alt="{{ security.name }}" class="align-bottom">
+                {% endif %}
+                <a href="{% url 'securities:security_detail' security.slug %}">
+                    {{ security.ticker }}
+                </a>
+            </span>
+
+
+
+
+
+        {% endfor %}
+
+        <h2 class="my-4">Комментарии {% get_comment_count for article as comment_count %} {% if comment_count %}{{ comment_count }}{% endif %}</h2>
+
+        {% if comment_count %}
+            {% get_comment_list for article as comment_list %}
+
+
+
+            {% for comment in comment_list %}
+                <div class="card w-75 text-dark bg-light mb-3">
+                    <div class="card-body">
+                      <h5 class="card-title mb-3">
+                          <a href="{% url 'users:profile_view' comment.user.username %}" style="text-decoration: none;">
+                          {% if comment.user.photo %}
+                            <img width="24" height="24" class="rounded-circle mb-2" src="{{ comment.user.photo.url }}" alt="">
+                          {% else %}
+                            <i class="bi bi-person-circle" style="font-size: 24px;"></i>
+                          {% endif %}
+                          <span class="ms-1 link-secondary">
+                              <em>
+                                  @{{ comment.user }}
+                              </em>
+                          </span>
+                          </a>
+                      </h5>
+                      <p class="card-text">
+                          {{ comment.comment }}
+                      </p>
+                      <p class="card-text"><small class="text-muted">{{ comment.submit_date|naturaltime }}</small></p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            {% get_comment_form for article as form %}
+            <form action="{% comment_form_target %}" method="POST" class="form w-75">
+                {% csrf_token %}
+                {% bootstrap_field form.comment show_label=False %}
+                {% bootstrap_field form.honeypot show_label=False %}
+                {% bootstrap_field form.content_type %}
+                {% bootstrap_field form.object_pk %}
+                {% bootstrap_field form.timestamp %}
+                {% bootstrap_field form.security_hash %}
+                {% bootstrap_button button_type="submit" content="Отправить" size='sm' button_class='btn btn-outline-secondary'  %}
+                <input type="hidden" name="next" value="{% url 'articles:detail_view' article.slug %}" />
+            </form>
+        {% else %}
+            <p>Пожалуйста, <a href="{% url 'users:login' %}">войдите</a>, чтобы оставить комментарий.</p>
+        {% endif %}
+
+    </p>
+
+
+
+    <br>
+    <br>
+    <a class="btn btn-outline-primary" href="{% url 'articles:list_view' %}">Назад</a>
+
+{% endblock %}

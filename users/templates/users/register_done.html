@@ -1,0 +1,20 @@
+{% extends 'layout/basic.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block title %}
+    Регистрация завершена
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mb-4">Регистрация завершена</h1>
+    <p>
+        Регистрация пользователя завершена.
+    </p>
+
+    <br>
+    <a class="btn btn-outline-primary" href="{% url 'articles:list_view' %}">Назад</a>
+
+{% endblock %}
+
