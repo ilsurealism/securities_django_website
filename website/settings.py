@@ -25,14 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-l7amu@ilj1hd2a3a7(dz54(amupt=n3y5oi=(m@29=&#c4ybk0'
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-l7amu@ilj1hd2a3a7(dz54(amupt=n3y5oi=(m@29=&#c4ybk0')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',  'django-insecure-l7amu@ilj1hd2a3a7(dz54(amupt=n3y5oi=(m@29=&#c4ybk0')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://shrouded-ridge-38532.herokuapp.com']
 
 
 # Application definition
