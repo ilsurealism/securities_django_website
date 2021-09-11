@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import django_heroku
 from pathlib import Path
+from decouple import config, Csv
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,14 +25,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-l7amu@ilj1hd2a3a7(dz54(amupt=n3y5oi=(m@29=&#c4ybk0'
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',  'django-insecure-l7amu@ilj1hd2a3a7(dz54(amupt=n3y5oi=(m@29=&#c4ybk0')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+#DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['https://shrouded-ridge-38532.herokuapp.com']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
 # Application definition
@@ -182,9 +184,9 @@ django_heroku.settings(locals())
 
 
 # AWS
-AWS_ACCESS_KEY_ID = 'AKIA3EJVY2K4A7CWVKWF'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'securities-media'
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
 AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
