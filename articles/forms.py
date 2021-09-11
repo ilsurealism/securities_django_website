@@ -16,7 +16,7 @@ class ArticleForm(autocomplete.FutureModelForm):
 
     class Meta:
         model = Article
-        fields = ('title', 'slug', 'author', 'title_image', 'description', 'body', 'tags', 'stocks_etfs_or_bonds')
+        fields = ('title', 'author', 'title_image', 'description', 'body', 'tags', 'stocks_etfs_or_bonds', 'published')
         widgets = {'author': HiddenInput,
                    'tags': autocomplete.TaggitSelect2('articles:tag-autocomplete'),
                    'stocks_etfs_or_bonds': autocomplete.ModelSelect2Multiple(url='articles:security-autocomplete')}

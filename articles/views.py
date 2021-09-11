@@ -70,7 +70,7 @@ class ArticlesList(ListView):
         context['tags_list'] = Tag.objects.annotate(articles_quantiy=Count('taggit_taggeditem_items')).order_by(
             '-articles_quantiy')[:10]
         context['securities_types_list'] = StocksETFsBonds.objects.all()
-        context['articles_list'] = Article.objects.all()[:20]
+        context['articles_list'] = Article.objects.filter(published=True)[:20]
         return context
 
 
@@ -188,7 +188,7 @@ class ArticlesByTagsList(ListView):
     #     return TaggedItem.objects.filter(tag=self.kwargs['tag'])
 
     def get_queryset(self):
-        return Article.objects.filter(tags__name=self.kwargs['tag'])
+        return Article.objects.filter(published=True, tags__name=self.kwargs['tag'])
 
     # def get_queryset(self):
     #     self.slug = get_object_or_404(Tag, name=self.kwargs['slug'])
@@ -224,7 +224,7 @@ class SearchView(ListView):
                                              Q(stocks_etfs_or_bonds__ticker__icontains=query) |
                                              Q(stocks_etfs_or_bonds__description__icontains=query) |
                                              Q(stocks_etfs_or_bonds__name__icontains=query) |
-                                             Q(tags__name__icontains=query))
+                                             Q(tags__name__icontains=query), published=True)
         # securities_list = StockETFBond.objects.filter(Q(name__icontains=query))
         # search_result = list(chain(object_list, securities_list))
         # return list(chain(object_list, securities_list))

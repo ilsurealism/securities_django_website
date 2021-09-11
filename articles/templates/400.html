@@ -1,0 +1,17 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}
+    Некорректный запрос
+{% endblock %}
+
+{% block content %}
+<div class="mt-5 d-flex justify-content-center">
+    <h1 class="display-1">400</h1>
+</div>
+<div class="d-flex justify-content-center">
+    <p class="fs-2">Некорректный запрос</p>
+</div>
+<div class="d-flex justify-content-center">
+    <a class="fs-5" href="{% url 'articles:list_view' %}">На главную</a>
+</div>
+{% endblock %}

@@ -13,7 +13,7 @@
     <div class="card mb-5">
         <div class="row p-4">
 
-            <div class="card-body col-6 pe-4">
+            <div class="card-body col-md-6 pe-4">
                     <div class="row">
                         <div class="col-2">
                             {% if security.icon %}
@@ -60,21 +60,27 @@
                             </div>
                         </div>
                         <div class="mt-4">
+                            {% if user.is_authenticated %}
+                                {% if not security.icon or not security.ticker or not security.description %}
+                                    <a href="{% url 'securities:security_update' security.slug %}">Обновить данные</a>
+                                {% endif %}
+                            {% endif %}
                             <p>
-                                {{ security.description }}
+                                {% if security.description %}
+                                    {{ security.description }}
+                                {% else %}
+                                    {{ meta.description }}
+                                {% endif %}
                             </p>
-                            <p>
-                                {{ meta.description }}
-                            </p>
+
                         </div>
                     </div>
             </div>
 
-            <div class="card-body col-6 ps-5 pb-5">
-                <br>
-                <br>
-                <br>
-                <table class="table table-hover mt-5">
+            <div class="card-body col-md-6 ps-md-5 pb-md-5">
+                <br class="md">
+                <br class="md">
+                <table class="table table-hover mt-md-5">
 
                   <tbody>
                     {% if daily_data %}
@@ -114,15 +120,23 @@
         <div class="card mb-3 bg-light">
             <div class="card-body">
                 <small>
+                    {% if user.is_superuser %}
+                        <span class="text-secondary me-1"><i class="bi bi-eye-fill me-1"></i>{{ article.views }}</span>
+                    {% endif %}
                     {% for tag in article.tags.all %}
-                        <i class="bi bi-hash"></i><a class="text-decoration-none" href="{% url 'articles:articles_by_tags' tag %}">{{ tag }}</a>
+                        <a class="text-decoration-none me-1" href="{% url 'articles:articles_by_tags' tag %}">#{{ tag }}</a>
                     {% endfor %}
                 </small>
                 <h1>
                     <a class="text-decoration-none" href="{% url 'articles:detail_view' article.slug %}">{{ article }}</a>
                 </h1>
-                <small class="me-1">
-                    Опубликовано: <a style="text-decoration: none;" class="link-secondary me-1" href="{% url 'users:profile_view' article.author.username %}"><em><b>@{{ article.author.username }}</b></em></a> {{ article.post_date|naturalday }}
+                <small class="me-1 text-secondary">
+                    <b class="me-1">{{ article.post_date|naturalday }}</b>
+                    {% if article.author.is_superuser %}
+                    <span class="badge bg-dark text-secondary me-1"><em>{{ request.get_host }}</em></span>
+                    {% else %}
+                    <a style="text-decoration: none;" class="link-secondary me-1" href="{% url 'users:profile_view' article.author.username %}"><em>@{{ article.author.username }}</em></a>
+                    {% endif %}
                 </small>
                 {% if user == article.author %}
                 <small>

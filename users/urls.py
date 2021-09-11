@@ -18,5 +18,5 @@ urlpatterns = [
     path('accounts/password/change/', UserPasswordChangeVeiw.as_view(), name='password_change'),
     path('accounts/register/done/', RegisterDoneView.as_view(), name='register_done'),
     path('accounts/register/', RegisterUserView.as_view(), name='register'),
-    path('privacy', PrivacyView.as_view(), name='privacy')
+    path('privacy', PrivacyView.as_view(), name='privacy'),
 ]

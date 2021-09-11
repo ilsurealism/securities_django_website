@@ -22,7 +22,10 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <header class="p-3 border-bottom">
+
+
+
+    <header class="p-3 border-bottom ">
         <div class="container-fluid d-grid gap-3 align-items-center">
           <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a id="home" href="/" class="navbar-brand pb-2 d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
@@ -58,7 +61,7 @@
                       {% endif %}
                   </a>
                   <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
-                    <span class="dropdown-item text-secondary">@{{ user.username }}</span>
+                    <span class="dropdown-item text-secondary"><em>@{{ user.username }}</em></span>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'articles:bookmarked_articles' %}"><i class="bi bi-book me-1"></i>Читать позже</a></li>
                     <li><a class="dropdown-item" href="{% url 'securities:watchlist' %}"><i class="bi bi-bookmark-star me-1"></i>Список наблюдения</a></li>
@@ -87,6 +90,7 @@
         </ul>
     </div>
 
+
     <div class="container mb-5">
 
         {# Display django.contrib.messages as Bootstrap alerts #}
@@ -102,10 +106,18 @@
     <span class="text-muted d-flex justify-content-center">
         <span>
             © 2021 Website
+
         </span>
-        <a class="mx-auto text-muted text-decoration-none" href="{% url 'users:privacy' %}">
-            Политика конфиденциальности
-        </a>
+        <span class="mx-auto ">
+            <a class="text-muted text-decoration-none" href="{% url 'users:privacy' %}">
+<!--                <i class="bi bi-shield me-1"></i>-->
+                Политика конфиденциальности
+            </a>
+            <br>
+            <a class="text-muted text-decoration-none" href="mailto:stocksabout@yahoo.com">
+<!--                <i class="bi bi-envelope me-1"></i>-->
+                stocksabout@yahoo.com</a>
+        </span>
         <span>
             <a href="#home" role="button"><i class="bi bi-arrow-up-circle text-muted fs-4"></i></a>
         </span>

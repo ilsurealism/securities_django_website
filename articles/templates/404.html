@@ -1,0 +1,17 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}
+    Страница не найдена
+{% endblock %}
+
+{% block content %}
+<div class="mt-5 d-flex justify-content-center">
+    <h1 class="display-1">404</h1>
+</div>
+<div class="d-flex justify-content-center">
+    <p class="fs-2">Страница не найдена</p>
+</div>
+<div class="d-flex justify-content-center">
+    <a class="fs-5" href="{% url 'articles:list_view' %}">На главную</a>
+</div>
+{% endblock %}

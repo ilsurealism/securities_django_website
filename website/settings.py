@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_comments',
     'captcha',
+    # for uploading files to AWS
+    'storages',
 
 
     'articles.apps.ArticlesConfig',
@@ -146,6 +148,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
@@ -165,6 +168,8 @@ AUTH_USER_MODEL = 'users.AdvUser'
 
 SITE_ID = 1
 
+LOGOUT_REDIRECT_URL = 'articles:list_view'
+
 # Heroku: Update database configuration from $DATABASE_URL.
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
@@ -176,3 +181,21 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+
+# AWS
+AWS_ACCESS_KEY_ID = 'AKIA3EJVY2K4A7CWVKWF'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'securities-media'
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+
+# for media files
+DEFAULT_FILE_STORAGE = 'website.storage_backends.MediaStorage'
+
+PUBLIC_MEDIA_LOCATION = 'media'
+MEDIA_URL = 'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'

@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 
 from taggit.models import Tag
@@ -64,7 +64,7 @@ def profile(request):
 #         return context
 
 
-class UserLogoutView(LoginRequiredMixin, LogoutView):
+class UserLogoutView(SuccessMessageMixin, LoginRequiredMixin, LogoutView):
     template_name = 'users/logout.html'
 
     def get_context_data(self, **kwargs):
@@ -121,11 +121,19 @@ class UserPasswordChangeVeiw(SuccessMessageMixin, LoginRequiredMixin, PasswordCh
         return context
 
 
-class RegisterUserView(CreateView):
+class RegisterUserView(SuccessMessageMixin, CreateView):
     model = AdvUser
     template_name = 'users/register_user.html'
     form_class = RegisterUserForm
-    success_url = reverse_lazy('users:register_done')
+    success_url = reverse_lazy('articles:list_view')
+    success_message = 'Вы успешно зарегистрировались!'
+
+    def form_valid(self, form):
+        valid = super(RegisterUserView, self).form_valid(form)
+        username, password = form.cleaned_data.get('username'), form.cleaned_data.get('password1')
+        new_user = authenticate(username=username, password=password)
+        login(self.request, new_user)
+        return valid
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -199,7 +207,7 @@ class ProfileView(DetailView):
             '-articles_quantiy')[:10]
         context['securities_types_list'] = StocksETFsBonds.objects.all()
         # context['articles_list'] = Article.objects.all()[:10]
-        context['user_profile_articles'] = Article.objects.filter(author=self.object.pk)
+        context['user_profile_articles'] = Article.objects.filter(author=self.object.pk, published=True)
         return context
 
 

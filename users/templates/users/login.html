@@ -13,7 +13,7 @@
     <form method="post" class="form">
         {% csrf_token %}
         {% bootstrap_form form %}
-        <p class="mb-4">Или <a href="#">зарегистрируйтесь</a></p>
+        <p class="mb-4">Или <a href="{% url 'users:register' %}">зарегистрируйтесь</a></p>
         {% bootstrap_button button_type="submit" content="Войти" %}
     </form>
 

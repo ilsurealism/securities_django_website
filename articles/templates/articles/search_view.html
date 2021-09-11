@@ -24,6 +24,9 @@
             <div class="card mb-3 bg-light">
                             <div class="card-body">
                                 <small>
+                                    {% if user.is_superuser %}
+                                        <span class="text-secondary"><i class="bi bi-eye-fill me-1"></i>{{ article.views }}</span>
+                                    {% endif %}
                                     {% for tag in article.tags.all %}
                                         <i class="bi bi-hash"></i><a class="text-decoration-none" href="{% url 'articles:articles_by_tags' tag %}">{{ tag }}</a>
                                     {% endfor %}

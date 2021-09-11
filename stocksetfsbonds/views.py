@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
@@ -74,7 +74,7 @@ class SecurityDetail(DetailView):
 
 
         # вывод связанных статей
-        context['articles_list'] = Article.objects.filter(stocks_etfs_or_bonds__slug=self.kwargs['slug'])
+        context['articles_list'] = Article.objects.filter(stocks_etfs_or_bonds__slug=self.kwargs['slug'], published=True)
         return context
 
 
@@ -83,6 +83,24 @@ class SecurityCreate(LoginRequiredMixin, CreateView):
     template_name = 'stocksetfsbonds/security_create.html'
     context_object_name = 'security'
     fields = ('name', 'stocketforbond', 'ticker', 'icon', 'description')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # необходимы для показа списка тэгов и типов бумаг в хедере
+        # context['tags_list'] = Tag.objects.all()
+        context['securities_types_list'] = StocksETFsBonds.objects.all()
+        # 5 тегов с наиболшим количством публикаций
+        context['tags_list'] = Tag.objects.annotate(articles_quantiy=Count('taggit_taggeditem_items')).order_by(
+            '-articles_quantiy')[:10]
+        return context
+
+
+class SecurityUpdate(LoginRequiredMixin, UpdateView):
+    model = StockETFBond
+    template_name = 'stocksetfsbonds/security_create.html'
+    context_object_name = 'security'
+    fields = ('ticker', 'icon', 'description')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

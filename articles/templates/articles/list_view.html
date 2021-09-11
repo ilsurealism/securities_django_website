@@ -16,16 +16,24 @@
         <div class="card mb-3 bg-light">
             <div class="card-body">
                 <small>
+                    {% if user.is_superuser %}
+                        <span class="text-secondary me-1"><i class="bi bi-eye-fill me-1"></i>{{ article.views }}</span>
+                    {% endif %}
                     {% for tag in article.tags.all %}
-                        <i class="bi bi-hash"></i><a class="text-decoration-none" href="{% url 'articles:articles_by_tags' tag %}">{{ tag }}</a>
+                        <a class="text-decoration-none me-1" href="{% url 'articles:articles_by_tags' tag %}">#{{ tag }}</a>
                     {% endfor %}
                 </small>
                 <h1>
                     <a class="text-decoration-none" href="{% url 'articles:detail_view' article.slug %}">{{ article }}</a>
                 </h1>
 
-                <small class="me-1">
-                    Опубликовано: <a style="text-decoration: none;" class="link-secondary me-1" href="{% url 'users:profile_view' article.author.username %}"><em><b>@{{ article.author.username }}</b></em></a> {{ article.post_date|naturalday }}
+                <small class="me-1 text-secondary">
+                    <b class="me-1">{{ article.post_date|naturalday }}</b>
+                    {% if article.author.is_superuser %}
+                    <span class="badge bg-dark text-secondary me-1"><em>{{ request.get_host }}</em></span>
+                    {% else %}
+                    <a style="text-decoration: none;" class="link-secondary me-1" href="{% url 'users:profile_view' article.author.username %}"><em>@{{ article.author.username }}</em></a>
+                    {% endif %}
                 </small>
                 {% if user == article.author %}
                 <small>

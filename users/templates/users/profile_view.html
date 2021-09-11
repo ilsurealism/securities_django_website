@@ -5,7 +5,7 @@
 {% load static %}
 
 {% block title %}
-    Профиль {{ user_profile.username }}
+    @{{ user_profile.username }}
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-md">
             <div class="row align-items-center border rounded mb-5">
         <div class="col-2">
             {% if user_profile.photo %}
@@ -28,7 +28,7 @@
                     {{ user_profile.first_name }} {{ user_profile.last_name }}
                 {% endif %}
             </h1>
-            <span class="text-secondary"><em><b>@{{ user_profile.username }}</b></em></span>
+            <span class="text-secondary"><em>@{{ user_profile.username }}</em></span>
         </div>
     </div>
         </div>
@@ -39,26 +39,31 @@
 
 </div>
 
-    <h1 class="mb-4">Публикации пользователя <span class="text-secondary"><em><b>@{{ user_profile.username }}</b></em></span></h1>
+    <h1 class="mb-4">Публикации пользователя <span class="text-secondary"><em>@{{ user_profile.username }}</em></span></h1>
 
     {% for article in user_profile_articles %}
         <div class="card mb-3 bg-light">
             <div class="card-body">
                 <small>
+                    {% if user.is_superuser %}
+                        <span class="text-secondary me-1"><i class="bi bi-eye-fill me-1"></i>{{ article.views }}</span>
+                    {% endif %}
                     {% for tag in article.tags.all %}
-                        <i class="bi bi-hash"></i><a class="text-decoration-none" href="{% url 'articles:articles_by_tags' tag %}">{{ tag }}</a>
+                        <a class="text-decoration-none me-1" href="{% url 'articles:articles_by_tags' tag %}">#{{ tag }}</a>
                     {% endfor %}
                 </small>
                 <h1>
                     <a class="text-decoration-none" href="{% url 'articles:detail_view' article.slug %}">{{ article }}</a>
                 </h1>
                 <small class="me-1">
-                    Опубликовано: {{ article.post_date|naturalday }}
+                    <b class="me-1">{{ article.post_date|naturalday }}</b>
                 </small>
+                {% if user == article.author %}
                 <small>
                     <a href="{% url 'articles:update_view' article.slug %}">Обновить</a>
                     <a href="{% url 'articles:delete_view' article.slug %}">Удалить</a>
                 </small>
+                {% endif %}
                 <p class="mt-4">
                     {{ article.description }}
                 </p>
