@@ -6,7 +6,6 @@ from django_extensions.db.fields import AutoSlugField
 from taggit.managers import TaggableManager
 # from froala_editor.fields import FroalaField
 # from autoslug import AutoSlugField
-from tinymce.models import HTMLField
 from ckeditor_uploader.fields import RichTextUploadingField
 
 from stocksetfsbonds.models import StockETFBond
