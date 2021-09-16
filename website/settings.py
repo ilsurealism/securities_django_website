@@ -23,7 +23,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-l7amu@ilj1hd2a3a7(dz54(amupt=n3y5oi=(m@29=&#c4ybk0'
 
 SECRET_KEY = config('SECRET_KEY')
 
@@ -204,9 +203,7 @@ MEDIA_URL = 'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
 
 AWS_QUERYSTRING_AUTH = False
 
-
 CKEDITOR_UPLOAD_PATH = "uploads/"
-
 
 CKEDITOR_CONFIGS = {
     'default': {
@@ -230,17 +227,9 @@ CKEDITOR_CONFIGS = {
             {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
             {'name': 'insert',
              'items': ['Image', 'Table', 'HorizontalRule', 'SpecialChar']},
-
-
-
-
             '/',  # put this to force next toolbar on new line
             {'name': 'yourcustomtools', 'items': [
                 # put the name of your editor.ui.addButton here
-
-
-
-
 
             ]},
 

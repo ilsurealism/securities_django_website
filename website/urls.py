@@ -26,7 +26,6 @@ urlpatterns = [
     path('securities/', include('stocksetfsbonds.urls')),
     path('', include('users.urls')),
 
-    path('froala_editor/', include('froala_editor.urls')),
     path('comments/', include('django_comments.urls')),
     path('captcha/', include('captcha.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
