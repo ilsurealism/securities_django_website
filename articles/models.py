@@ -4,7 +4,6 @@ from django.utils.text import slugify
 
 from django_extensions.db.fields import AutoSlugField
 from taggit.managers import TaggableManager
-# from froala_editor.fields import FroalaField
 # from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
 
