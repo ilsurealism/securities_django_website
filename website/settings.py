@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     'captcha',
     # for uploading files to AWS
     'storages',
+    'ckeditor',
+    'ckeditor_uploader',
 
 
     'articles.apps.ArticlesConfig',
@@ -199,3 +201,76 @@ DEFAULT_FILE_STORAGE = 'website.storage_backends.MediaStorage'
 
 PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = 'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+
+AWS_QUERYSTRING_AUTH = False
+
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',
+        'skin': 'moono-lisa',
+        # 'skin': 'office2013',
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_YourCustomToolbarConfig': [
+            {'name': 'document', 'items': ['Maximize', 'Preview', 'Source', 'ShowBlocks', '-', ]},
+            {'name': 'clipboard', 'items': ['Undo', 'Redo', '-', 'Find', 'Replace', '-', 'PasteText', 'PasteFromWord']},
+
+            {'name': 'basicstyles',
+             'items': ['Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor', '-', 'RemoveFormat']},
+            '/',
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert',
+             'items': ['Image', 'Table', 'HorizontalRule', 'SpecialChar']},
+
+
+
+
+            '/',  # put this to force next toolbar on new line
+            {'name': 'yourcustomtools', 'items': [
+                # put the name of your editor.ui.addButton here
+
+
+
+
+
+            ]},
+
+        ],
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        # 'height': 291,
+
+
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': '100%',
+        # 'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join([
+            'uploadimage', # the upload image feature
+            # your extra plugins here
+            'div',
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            # 'devtools',
+            'widget',
+            'lineutils',
+            'clipboard',
+            'dialog',
+            'dialogui',
+            'elementspath',
+            'resize',
+        ]),
+    }
+}

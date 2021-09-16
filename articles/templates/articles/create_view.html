@@ -1,5 +1,7 @@
 {% extends 'layout/basic.html' %}
 
+{% load static %}
+
 {% load django_bootstrap5 %}
 
 {% block title %}
@@ -7,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
 
     <h1 class="mb-4">Добавление новой публикации</h1>
 
@@ -21,6 +23,7 @@
 
     <br>
     <a class="btn btn-outline-primary" href="{% url 'articles:list_view' %}">Назад</a>
+
 
 <script>
 (function($) {

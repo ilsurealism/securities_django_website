@@ -29,5 +29,6 @@ urlpatterns = [
     path('froala_editor/', include('froala_editor.urls')),
     path('comments/', include('django_comments.urls')),
     path('captcha/', include('captcha.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + \
               static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

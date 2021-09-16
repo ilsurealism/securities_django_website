@@ -4,12 +4,15 @@ from django.utils.text import slugify
 
 from django_extensions.db.fields import AutoSlugField
 from taggit.managers import TaggableManager
-from froala_editor.fields import FroalaField
+# from froala_editor.fields import FroalaField
 # from autoslug import AutoSlugField
+from tinymce.models import HTMLField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 from stocksetfsbonds.models import StockETFBond
 from users.models import AdvUser
 from .utilities import article_img_directory_path, article_slugify_function
+
 
 
 class Article(models.Model):
@@ -20,7 +23,7 @@ class Article(models.Model):
     author = models.ForeignKey(AdvUser, verbose_name='автор', on_delete=models.CASCADE)
     title_image = models.ImageField(verbose_name='Титульное изображение', blank=True, upload_to=article_img_directory_path)
     description = models.TextField(verbose_name='Краткое описание')
-    body = FroalaField(verbose_name='Текст', options={'attribution': False})
+    body = models.TextField(verbose_name='Текст')
     post_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     update_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата обновления публикации')
     tags = TaggableManager(verbose_name='Теги', help_text='Теги через запятую', blank=True)
