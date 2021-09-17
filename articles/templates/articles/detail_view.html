@@ -45,14 +45,14 @@
         {% else %}
             {% url 'users:profile_view' article.author.username %}
         {% endif %}" style="text-decoration: none;">
-        {% if article.author.photo %}
-            {% if article.author.is_superuser %}
+        {% if article.author.is_superuser %}
 
-            {% else %}
-                <img width="24" height="24" class="rounded-circle mb-2" src="{{ article.author.photo.url }}" alt="">
-            {% endif %}
         {% else %}
-            <i class="bi bi-person-circle text-dark" style="font-size: 24px;"></i>
+            {% if article.author.photo %}
+                <img width="24" height="24" class="rounded-circle mb-2" src="{{ article.author.photo.url }}" alt="">
+            {% else %}
+                <i class="bi bi-person-circle text-dark" style="font-size: 24px;"></i>
+            {% endif %}
         {% endif %}
         {% if article.author.is_superuser %}
                             <span class="badge bg-dark text-secondary me-1"><em>{{ request.get_host }}</em></span>
