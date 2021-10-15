@@ -2,7 +2,7 @@ import requests
 
 headers = {
         'Content-Type': 'application/json',
-        'Authorization' : 'Token 23c37bd185455554f406e48687a97506b61ce4bd'
+        'Authorization' : 'Token'
         }
 
 # Meta Data
